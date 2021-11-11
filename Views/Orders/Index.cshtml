@@ -1,0 +1,77 @@
+﻿@model IEnumerable<JYTGameStore.Models.Orders>
+
+<div class="container p-3">
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Order &gt;&nbsp;
+        <span class="font-weight-bold">Your Orders</span>
+    </ol>
+
+    <h2>@ViewBag.Title</h2>
+    <hr />
+
+    <div class="row m-1">
+        <div class="col-3">&nbsp;</div>
+        <div class="col-9 text-right font-weight-bold">
+            Order Status: (1) Purchased => (2) Processed => (3) Completed
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th class="text-center" width="50">No</th>
+                <th class="text-center">Order Date</th>
+                <th class="text-center">Order Number</th>
+                <th class="text-center">Total Amount</th>
+                <th class="text-center">Order Status</th>
+                <th class="text-center">Credit Card</th>
+            </tr>
+        </thead>
+        @if (Model.Count() > 0)
+        {
+        var no = 0;
+        <tbody>
+            @foreach (Orders orderItem in Model)
+            {
+            no++;
+
+            var orderStatus = "";
+            if (orderItem.OrderStatus == "1")
+            {
+                orderStatus = "Purchased";
+            }
+            else if (orderItem.OrderStatus == "2")
+            {
+                orderStatus = "Proceed";
+            }
+            else if (orderItem.OrderStatus == "3")
+            {
+                orderStatus = "Completed";
+            }
+
+            var cardNumber = "****" + "-" +
+            orderItem.CreditCard.CCNumber.Substring(4, 4) + "-" +
+            "****" + "-" +
+            orderItem.CreditCard.CCNumber.Substring(12, 4);
+            <tr>
+                <td class="text-center">@no</td>
+                <td class="text-center font-weight-bold"><a href="/Orders/Details/@orderItem.OrderId">@orderItem.OrderDate.ToString("yyyy-MM-dd hh:mm tt")</a></td>
+                <td class="text-center font-weight-bold"><a href="/Orders/Details/@orderItem.OrderId">@orderItem.OrderId</a></td>
+                <td class="text-center font-weight-bold">@string.Format("{0:C}", orderItem.TotalAmount)</td>
+                <td class="text-center font-weight-bold">@orderStatus</td>
+                <td class="text-center">@cardNumber</td>
+            </tr>
+            }
+        </tbody>
+        }
+        else
+        {
+        <tbody>
+            <tr><td colspan="6" class="text-center"><b>No Orders!</b></td></tr>
+        </tbody>
+        }
+    </table>
+
+</div>
+

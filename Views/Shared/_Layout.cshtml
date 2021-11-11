@@ -1,0 +1,151 @@
+﻿@inject SignInManager<IdentityUser> signInManager;
+@inject UserManager<IdentityUser> users;
+@{
+    Boolean isAdmin = User.IsInRole("Admin");
+    Boolean isEmployee = User.IsInRole("Employee");
+    Boolean isMember = User.IsInRole("Member");
+}
+@if (TempData["Message"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["Message"]");
+    </script>
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - JYTGameStore</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/JYTLogo.JPG" width="50" height="50" alt="JYT Game Store logo image" />
+                    <strong>JYTGameStore</strong>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1"></ul>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Game
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="SelectingGames" asp-action="Index">Selecting Games</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="GameList" asp-action="Index">Game List</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="WishLists" asp-action="Index">Wish List</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Friends and Family
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="FriendsAndFamily" asp-action="Index">Search your Friends and Family</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="FriendsAndFamily" asp-action="ShowFriendsAndFamilyList">Friends and Family List</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Order
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Event
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Index">Event</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="Index">Game</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RegisterEvent" asp-action="Index">My Event List</a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown mr-2">
+                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @User.Identity.Name
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Profile</a>
+                                <a class="nav-link text-dark" asp-controller="Preference" asp-action="Index">Preference</a>
+                                <a class="nav-link text-dark" asp-controller="Address" asp-action="Index">Address</a>
+                                <a class="nav-link text-dark" asp-controller="CreditCards" asp-action="Index">Credit Cards</a>
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
+                                <form method="POST" asp-controller="Account" asp-action="logout">
+                                    <button type="submit" class="nav-link text-dark btn btn-link py-0">Logout</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        @if (isAdmin || isEmployee)
+                        {
+                            <div class="dropdown mr-2">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Employee Panel
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Index">Event</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Game" asp-action="Index">Game</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Game Category</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Reports" asp-action="Index">Reports</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="ReviewGameReviews" asp-action="Index">Review Game Review</a>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="dropdown mr-2">
+                            <a class="btn btn-danger" asp-controller="SelectingGames" asp-action="Index">Game</a>
+                        </div>
+                        <div class="dropdown mr-2">
+                            <a class="btn btn-info" asp-controller="Event" asp-action="Index">Event</a>
+                        </div>
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - JYTGameStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

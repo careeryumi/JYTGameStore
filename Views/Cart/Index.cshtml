@@ -1,0 +1,81 @@
+﻿@model IEnumerable<JYTGameStore.Models.Cart>
+
+<div class="container p-3">
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Game &gt;&nbsp;
+        <span class="font-weight-bold">Cart</span>
+    </ol>
+
+    <h2>@ViewBag.Title</h2>
+    <hr />
+
+    <div class="m-2">&nbsp;</div>
+
+    <form method="post" asp-controller="Orders" asp-action="Checkout">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center" width="50">No</th>
+                    <th class="text-center" width="50">Image</th>
+                    <th class="pl-5">Game Name</th>
+                    <th class="pl-5">Description</th>
+                    <th class="text-center" width="120">Price</th>
+                    <th class="text-center" width="100">Delete</th>
+                </tr>
+            </thead>
+            @if (Model.Count() > 0)
+            {
+                int no = 0;
+                float sumPrice = 0;
+                <tbody>
+                    @foreach (Cart cartItem in Model)
+                    {
+                        no++;
+                        var gameImage = "/images/" + (cartItem.Game.imageUrl ?? "noimage.jpg");
+                        var gameDescription = (cartItem.Game.GameDescription.Length > 100) ? cartItem.Game.GameDescription.Substring(0, 100) + "..." : cartItem.Game.GameDescription;
+                        sumPrice += (float)cartItem.Game.Price;
+                    <tr>
+                        <!--<td class="text-center"><input type="checkbox" id="cart_@cartItem.cartId" name="checkCart" value="@cartItem.cartId" checked="checked" /></td>-->
+                        <td class="text-center">@no</td>
+                        <td class="text-center"><a href="/GameList/Details/@cartItem.Game.gameId"><img src="@gameImage" alt="@cartItem.Game.GameName" width="80" height="80" /></a></td>
+                        <td class="pl-5 font-weight-bold"><a href="/GameList/Details/@cartItem.Game.gameId">@cartItem.Game.GameName</a></td>
+                        <td class="pl-5"><a href="/GameList/Details/@cartItem.Game.gameId">@gameDescription</a></td>
+                        <td class="text-center">@string.Format("{0:C}", cartItem.Game.Price)</td>
+                        <td class="text-center">
+                            <a asp-controller="Cart" asp-action="Delete" asp-route-CartId="@cartItem.cartId" class="btn btn-danger mx-1"
+                               onclick="return confirm('Are you sure to delete this game in the cart?');">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot class="table-info">
+                    <tr>
+                        <td colspan="4" class="text-right font-weight-bold">Sum</td>
+                        <td class="text-center font-weight-bold">@string.Format("{0:C}", sumPrice)</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            }
+            else
+            {
+                <tbody>
+                    <tr><td colspan="6" class="text-center"><b>No Game Item in the Cart!</b></td></tr>
+                </tbody>
+            }
+        </table>
+
+        <div class="row m-1">
+            <div class="col-3"><a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a></div>
+            <div class="col-6 text-center">&nbsp;</div>
+            <div class="col-3 text-right">
+                @if (Model.Count() > 0)
+                {
+                    <input type="submit" class="btn btn-primary w-auto" value="Proceed to Checkout" />
+                }
+            </div>
+        </div>
+    </form>
+
+</div>
+

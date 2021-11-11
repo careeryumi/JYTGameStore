@@ -1,0 +1,61 @@
+﻿@model IEnumerable<JYTGameStore.Models.Category>
+
+@{
+    Boolean isAdmin = User.IsInRole("Admin");
+    Boolean isEmployee = User.IsInRole("Employee");
+    Boolean isMember = User.IsInRole("Member");
+
+}
+<div class="container p-1">
+    <ol class="breadcrumb">
+        Admin &gt; Game Category &gt; Game Category List
+    </ol>
+
+    <div class="row p-3">
+        <div class="col-6">
+            <h2 class="text-primary">Game Category List</h2>
+        </div>
+        @if (isAdmin || isEmployee)
+        {
+            <div class="col-6 text-right">
+                <a asp-controller="Category" asp-action="Create" class="btn btn-primary">Create New Game Category</a>
+            </div>
+        }
+
+    </div>
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(Model => Model.CategoryName)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.CategoryName</td>
+
+                        @if (isAdmin || isEmployee)
+                        {
+                            <td class="text-center">
+                                <div class="w-100 btn-group" role="group">
+                                    <a asp-controller="Category" asp-route-CategoryId="@obj.CategoryId" asp-action="Edit" class="btn btn-primary btn-sm">Edit</a>
+                                    <a asp-controller="Category" asp-route-CategoryId="@obj.CategoryId" asp-action="Delete" class="btn btn-danger btn-sm">Delete</a>
+                                </div>
+                            </td>
+                        }
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No category exists.</p>
+    }
+</div>

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<JYTGameStore.Models.FriendsAndFamily>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Friends and Family list</h1>
+</br>
+</br>
+<h2>If your friends add you as friends as well, you can see the wish list of them!</h2>
+
+</br>
+
+<p>
+    @*<a asp-action="Create">Friends and Family list</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FriendsAndFamilyEmail)
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.isFriendOrFamily)*@
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FriendsAndFamilyEmail)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.isFriendOrFamily)
+                    </td>*@
+                <td>
+                    @if (item.bothAccepted == "Yes")
+                    {
+                        <a asp-action="SeeFriendsAndFamilyWishList" asp-route-id="@item.friendsAndFamilyId">See Friends and family's wish list</a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.friendsAndFamilyId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<JYTGameStore.Models.WishList>
+
+@{
+    ViewData["Title"] = "Wish List";
+}
+
+<ol class="breadcrumb">
+    JYTGameStore &gt; Game &gt;&nbsp;<span class="font-weight-bold">Wish List</span>
+</ol>
+
+<h1>Wish List</h1>
+
+<script type="text/javascript">
+    function func() {
+        var WishListForTweet = '@ViewBag.WishListForTweeter';        
+        window.location.href = "https://twitter.com/intent/tweet?text=" + WishListForTweet;
+    }
+</script>
+
+<form id="form1" runat="server">
+    <div class="row col-12 text-right">
+        <a class="btn btn-info w-20" onclick="func();">
+            Tweet
+        </a>
+    </div>
+</form>
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Game)
+            </th>
+            <th>
+                Game Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Game.GameDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Game.GameName)
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.wishListId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.wishListId">Details</a> |*@
+                    <a asp-action="Delete" asp-route-id="@item.wishListId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+

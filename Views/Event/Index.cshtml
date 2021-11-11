@@ -1,0 +1,82 @@
+﻿@model IEnumerable<JYTGameStore.Models.Event>
+
+@{
+    ViewData["Title"] = "Index - Event";
+
+    Boolean isAdmin = User.IsInRole("Admin");
+    Boolean isEmployee = User.IsInRole("Employee");
+    Boolean isMember = User.IsInRole("Member");
+
+}
+
+<div class="row pt-lg-5 text-lg-center">
+    <div class="col-6 bg-info">
+        <h2 class="text-light">Event List</h2>
+    </div>
+</div>
+<br />
+<br />
+@if (isAdmin || isEmployee)
+{
+
+    <div class="col-12 text-lg-right">
+        <a asp-action="Create" class="btn btn-success">Create New Event</a>
+    </div>
+    <br />
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Event" asp-action="Details" asp-route-eventId="@item.EventId">@Html.DisplayFor(modelItem => item.Name)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                @if (isAdmin || isEmployee)
+                {
+                    <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.EventId">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+                    </td>
+                }
+                <td>
+                    <a class="btn btn-primary" asp-action="Add" asp-route-id="@item.EventId">Enroll</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

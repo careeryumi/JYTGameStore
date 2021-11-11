@@ -1,0 +1,66 @@
+﻿@model JYTGameStore.Models.Event
+
+@{
+    ViewData["Title"] = "Details";
+    Boolean isAdmin = User.IsInRole("Admin");
+    Boolean isEmployee = User.IsInRole("Employee");
+    Boolean isMember = User.IsInRole("Member");
+}
+
+<div class="row p-3">
+    <div class="col-6">
+        <h2 class="text-info">Detail of Event</h2>
+    </div>
+    <div class="col-6 text-right">&nbsp;</div>
+</div>
+<div class="row border p-3">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Description)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.StartDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.StartDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.EndDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.EndDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PublishDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PublishDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Publisher)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Publisher)
+    </dd>
+    </dl>
+    <div>
+        @if (isAdmin || isEmployee)
+        {
+            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.EventId">Edit</a>
+        }
+    <td>
+        <a class="btn btn-primary" asp-action="Add" asp-route-id="@Model.EventId">Enroll</a>
+        <a class="btn btn-info" asp-action="Index">Back to Event List</a>
+    </td>
+    </div>
+</div>
+
+

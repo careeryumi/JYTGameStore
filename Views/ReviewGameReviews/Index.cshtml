@@ -1,0 +1,74 @@
+﻿@model IEnumerable<JYTGameStore.Models.GameReview>
+
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Employee Panel &gt;&nbsp;
+        <span class="font-weight-bold">Review Game Reviews</span>
+    </ol>
+
+    <div class="row pt-lg-5 text-lg-center">
+        <div class="col-6 bg-info">
+            <h2 class="text-light">Review Game Reviews</h2>
+        </div>
+    </div>
+<br />
+
+    @if (Model.Count() > 0)
+    {
+        <form method="post" asp-controller="ReviewGameReviews" asp-action="ApproveGameReviews">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Select
+                        </th>
+                        <th>
+                            Game review id
+                        </th>
+                        <th>
+                            Game review description
+                        </th>
+                        @*<th>
+                                User email
+                            </th>*@
+                        <th>
+                            Game review date
+                        </th>
+                        <th>
+                            Game name
+                        </th>
+                        <th>
+                            Approved or not
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><input id="@item.gameReviewId" name="AreChecked" type="checkbox" value="@item.gameReviewId" /></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.gameReviewId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.gameReviewDescription)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.User.Email)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.reviewDate2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Game.GameName)
+                            </td>
+                            <td>
+                                @(item.isApproved ? "Yes" : "No")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Approve" class="btn btn-success w-25" />
+        </form>
+    }

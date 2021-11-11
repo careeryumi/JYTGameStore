@@ -1,0 +1,119 @@
+﻿@model JYTGameStore.Models.Orders
+
+<div class="container p-3">
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Order &gt;&nbsp;
+        <span class="font-weight-bold">Checkout</span>
+    </ol>
+
+    <h2>@ViewBag.Title</h2>
+    <hr />
+
+    <div class="m-2">&nbsp;</div>
+
+    <form method="post" asp-action="PlaceOrder">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h4>Order Information</h4>
+        <hr />
+        <div class="row m-2">
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label class="font-weight-bold">User Name</label>
+                </div>
+                <div class="col-9">
+                    <span class="-weight-bold">@ViewData["userName"]</span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label class="font-weight-bold">Email</label>
+                </div>
+                <div class="col-9">
+                    <span class="-weight-bold">@ViewData["email"]</span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="TotalAmount" class="font-weight-bold"></label>
+                </div>
+                <div class="col-6">
+                    <input asp-for="TotalAmount" class="form-control w-50" value="@ViewData["totalAmount"]" disabled />
+                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="CreditCardId" class="font-weight-bold"></label>
+                </div>
+                <div class="col-6">
+                    <select asp-for="CreditCardId" class="form-control w-100" asp-items="ViewBag.SelectCreditCard"></select>                    
+                    <span asp-validation-for="CreditCardId" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="CreditCards" asp-action="Index" class="btn btn-sm btn-info">Register Credit Card</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-1">
+            <div class="col-3"><a asp-controller="Cart" asp-action="Index" class="btn btn-secondary">Back to Cart</a></div>
+            <div class="col-6 text-center"><input type="submit" class="btn btn-primary w-auto" value="Place your order" /></div>
+            <div class="col-3 text-right">&nbsp;</div>
+        </div>
+
+    </form>
+
+    <div class="m-3">&nbsp;</div>
+    <h4>Review Items</h4>
+    <hr />
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center" width="50">No</th>
+                <th class="text-center" width="50">Image</th>
+                <th class="pl-5">Game Name</th>
+                <th class="pl-5">Description</th>
+                <th class="text-center" width="120">Price</th>
+            </tr>
+        </thead>
+        @if (ViewData["cartListData"] != null)
+        {
+            var cartList = ViewData["cartListData"] as IEnumerable<JYTGameStore.Models.Cart>;
+            int no = 0;
+            float sumPrice = 0;
+            <tbody>
+                @foreach (Cart cartItem in cartList)
+                {
+                    no++;
+                    var gameImage = "/images/" + (cartItem.Game.imageUrl ?? "noimage.jpg");
+                    var gameDescription = (cartItem.Game.GameDescription.Length > 100) ? cartItem.Game.GameDescription.Substring(0, 100) + "..." : cartItem.Game.GameDescription;
+                    sumPrice += (float)cartItem.Game.Price;
+                    <tr>
+                        <td class="text-center">@no</td>
+                        <td class="text-center"><a href="/GameList/Details/@cartItem.Game.gameId"><img src="@gameImage" alt="@cartItem.Game.GameName" width="80" height="80" /></a></td>
+                        <td class="pl-5 font-weight-bold"><a href="/GameList/Details/@cartItem.Game.gameId">@cartItem.Game.GameName</a></td>
+                        <td class="pl-5"><a href="/GameList/Details/@cartItem.Game.gameId">@gameDescription</a></td>
+                        <td class="text-center">@string.Format("{0:C}", cartItem.Game.Price)</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-info">
+                <tr>
+                    <td colspan="4" class="text-right font-weight-bold">Sum</td>
+                    <td class="text-center font-weight-bold">@string.Format("{0:C}", sumPrice)</td>
+                </tr>
+            </tfoot>
+        }
+        else
+        {
+            <tbody>
+                <tr><td colspan="5" class="text-center"><b>No Game Items!</b></td></tr>
+            </tbody>
+        }
+    </table>
+
+</div>
+

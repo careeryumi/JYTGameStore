@@ -1,0 +1,62 @@
+﻿@model Profile
+
+@{
+    ViewBag.Title = @User.Identity.Name + " 's Profile";
+}
+<div class="row p-3">
+    <div class="col-6">
+        <h2 class="text-info">@User.Identity.Name's Profile</h2>
+    </div>
+    <div class="col-6 text-right">&nbsp;</div>
+</div>
+<div class="row border p-3">
+    <div class="col-md-12">
+        <form method="POST" novalidate>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" value="@ViewData["userName"]" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" readonly value="@ViewData["email"]" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" class="form-control" asp-items="ViewBag.Gender"></select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DOB" class="control-label"></label>
+                <input asp-for="DOB" class="form-control" type="date" />
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="IsPromotion" class="form-check-input" type="checkbox" />
+                <label asp-for="IsPromotion"></label>
+                <span asp-validation-for="IsPromotion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-info" asp-action="Index">Back Profile</a>
+            </div>
+        </form>
+    </div>
+</div>

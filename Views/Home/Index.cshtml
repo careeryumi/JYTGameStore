@@ -1,0 +1,84 @@
+﻿@using JYTGameStore;
+@model dynamic
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<ol class="breadcrumb">
+    JYTGameStore &gt; &nbsp;
+    <span class="font-weight-bold"> Home</span>
+</ol>
+
+<div class="row p-2">
+    <div class="col-8">
+        <div class="text-center">
+            <h1 class="display-6">Welcome to the JYT Game store!</h1>
+            <br />
+            <img src="~/JYTLogo.JPG" width="200" height="200" />
+        </div>
+    </div>
+    <div class="col-4 border-left">
+        <div class="row">
+            <div class="col-6"><h5 class="display-6">Event</h5></div>
+            <div class="col-6 text-right pt-1"><a href="/Event">More...</a></div>
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach (Event eventItem in Model.eventList)
+            {
+                var eventName = (eventItem.Name.Length > 40) ? eventItem.Name.Substring(0, 40) + "..." : eventItem.Name;
+                <li class="list-group-item"><a href="/Event/Details?eventId=@eventItem.EventId">@eventName</a></li>
+            }
+        </ul>
+    </div>
+</div>
+<hr />
+<div class="row pl-3">
+    <div class="col-3">
+        <h5 class="display-6">Game Categories</h5>
+        <div class="list-group">
+            @foreach (Category categoryItem in Model.categoryList)
+            {
+                <a href="/GameList" class="list-group-item list-group-item-action">@categoryItem.CategoryName</a>
+            }
+        </div>
+
+        <div class="m-4"></div>
+
+        <div class="row">
+            <div class="col-8"><h5 class="display-6">Game Review</h5></div>
+            <div class="col-4 text-right pt-1"><!--<a href="#">More...</a>--></div>
+        </div>
+        <ul class="list-group list-group-flush">
+            @foreach (GameReview gameReviewItem in Model.gameReviewList)
+            {
+                var gameReviewDescription = (gameReviewItem.gameReviewDescription.Length > 25) ? gameReviewItem.gameReviewDescription.Substring(0, 25) + "..." : gameReviewItem.gameReviewDescription;
+                <li class="list-group-item"><a href="/GameList/Details/@gameReviewItem.gameId">@gameReviewDescription</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-9 border-left">
+        <div class="row">
+            @foreach (Game gameItem in Model.gameList)
+            {
+                var gameImage = "/images/" + (gameItem.imageUrl ?? "noimage.jpg");
+                var gameName = (gameItem.GameName.Length > 20) ? gameItem.GameName.Substring(0, 20) + "..." : gameItem.GameName;
+
+                <div class="col-sm-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="/GameList/Details/@gameItem.gameId"><img src="@gameImage" alt="@gameItem.GameName" width="208" height="130" class="card-img-top" /></a>
+                            <h6 class="card-title"><a href="/GameList/Details/@gameItem.gameId">@gameName</a></h6>
+                            <div class="badge bg-light text-wrap">@gameItem.Category.CategoryName</div>
+                            <p class="card-text">Price: @string.Format("{0:C}", gameItem.Price)</p>
+                            <a href="/GameList/Details/@gameItem.gameId" class="btn btn-sm btn-outline-primary">Details</a>
+                            <a asp-controller="GameList" asp-action="AddToWishList" asp-route-GameId="@gameItem.gameId" class="btn btn-sm btn-success">Wishlist</a>
+                            <a asp-controller="Cart" asp-action="Create" asp-route-GameId="@gameItem.gameId" class="btn btn-sm btn-primary">Add Cart</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

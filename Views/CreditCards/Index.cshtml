@@ -1,0 +1,69 @@
+﻿@model IEnumerable<JYTGameStore.Models.CreditCard>
+
+<div class="container p-3">
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Member &gt;&nbsp;
+        <span class="font-weight-bold">Credit Card</span>
+    </ol>
+
+    <h2>@ViewBag.Title</h2>
+    <hr />
+
+    <form method="post" asp-controller="SelectingGames" asp-action="ShowGameDetails">
+        <div class="row m-1 pb-1">
+            <div class="col-3">&nbsp;</div>
+            <div class="col-6 text-center">&nbsp;</div>
+            <div class="col-3 text-right"><a asp-controller="CreditCards" asp-action="Create" class="btn btn-primary">Add Credit Card</a></div>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">NO</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.CCNumber)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.CCMonth)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.CCYear)</th>
+                    <th class="text-center">&nbsp;</th>
+                </tr>
+            </thead>
+            @if (Model.Count() > 0)
+            {
+                var no = 0;
+                <tbody>
+                    @foreach (var creditCardItem in Model)
+                    {
+                        no++;
+                        var ccNumber = "****" + "-" +
+                            creditCardItem.CCNumber.Substring(4, 4) + "-" +
+                            "****" + "-" +
+                            creditCardItem.CCNumber.Substring(12, 4);
+                        <tr>
+                            <td class="text-center">@no</td>
+                            <td class="text-center font-weight-bold">@ccNumber</td>
+                            <td class="text-center">@creditCardItem.CCMonth</td>
+                            <td class="text-center">@creditCardItem.CCYear</td>
+                            <td class="text-center">
+                                <a asp-controller="CreditCards" asp-action="Edit" asp-route-Id="@creditCardItem.CreditCardId" class="btn btn-info mx-1">Edit</a>
+                                <a asp-controller="CreditCards" asp-action="Delete" asp-route-Id="@creditCardItem.CreditCardId" class="btn btn-danger mx-1">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr><td colspan="5" class="text-center"><b>No Credit Card!</b></td></tr>
+                </tbody>
+            }
+        </table>
+
+        <div class="row m-1">
+            <div class="col-3"><a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to Home</a></div>
+            <div class="col-6 text-center">&nbsp;</div>
+            <div class="col-3 text-right">&nbsp;</div>
+        </div>
+    </form>
+
+</div>

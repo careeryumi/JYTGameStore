@@ -1,0 +1,162 @@
+﻿@model IEnumerable<JYTGameStore.Models.GameReview>
+
+@{
+    ViewData["Title"] = "Details";
+    var gameImage = "/images/" + (@ViewBag.imgUrl ?? "noimage.jpg");
+}
+
+<ol class="breadcrumb">
+    JYTGameStore &gt; Game &gt;&nbsp;
+    <span class="font-weight-bold">Game Details</span>
+</ol>
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+
+            if (@ViewBag.selectedRatingPerUserPerGame == 1) {
+                radiobtn = document.getElementById("one");
+                radiobtn.checked = true;
+            }
+            else if(@ViewBag.selectedRatingPerUserPerGame == 2){
+                radiobtn = document.getElementById("two");
+                radiobtn.checked = true;
+            }
+            else if(@ViewBag.selectedRatingPerUserPerGame == 3){
+                radiobtn = document.getElementById("three");
+                radiobtn.checked = true;
+            }
+            else if (@ViewBag.selectedRatingPerUserPerGame == 4) {
+                radiobtn = document.getElementById("four");
+                radiobtn.checked = true;
+            }
+            else if (@ViewBag.selectedRatingPerUserPerGame == 5) {
+                radiobtn = document.getElementById("five");
+                radiobtn.checked = true;
+            }
+        });
+
+</script>
+
+<h1>@ViewBag.gameName</h1>
+<hr />
+
+<div class="row">
+    <div class="col-6">
+        <div class="row mb-4">
+            <img src="@gameImage" width="100%" />
+        </div>
+        <div class="row">
+            @ViewBag.gameDescription
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row m-2">
+            <div class="col-4 text-left font-weight-bold">
+                Game Name
+            </div>
+            <div class="col-8 font-weight-bold">
+                @ViewBag.gameName
+            </div>
+        </div>
+        <div class="row m-2">
+            <div class="col-4 text-left font-weight-bold">
+                Game Category
+            </div>
+            <div class="col-8">
+                @ViewBag.gameName
+            </div>
+        </div>
+        <div class="row m-2">
+            <div class="col-4 text-left font-weight-bold">
+                Overall Rating
+            </div>
+            <div class="col-8">
+                @ViewBag.OverAll
+            </div>
+        </div>
+        <div class="row m-2">
+            <div class="col-4 text-left font-weight-bold">
+                Game Rating
+            </div>
+            <div class="col-8">
+                <form method="post" asp-action="AddGameRatings" asp-route-GameId="@ViewBag.gameId">
+                    <label>1<input type="radio" name="YourRadioButton" id="one" value="1" /></label>
+                    <label>2<input type="radio" name="YourRadioButton" id="two" value="2" /></label>
+                    <label>3<input type="radio" name="YourRadioButton" id="three" value="3" /></label>
+                    <label>4<input type="radio" name="YourRadioButton" id="four" value="4" /></label>
+                    <label>5<input type="radio" name="YourRadioButton" id="five" value="5" /></label>
+                    <input type="submit" class="btn btn-danger w-25 ml-1" value="Rate!" />
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-5"></div>
+        <hr />
+        <div class="row m-2">
+            <div class="col-4">
+                <a asp-action="Index" class="btn btn-dark w-30">Back to List</a>
+            </div>
+            <div class="col-8 text-right">
+                <a asp-controller="GameList" asp-action="AddToWishList" asp-route-GameId="@ViewBag.gameId" class="btn btn-info w-30">Add to wish list!</a>
+                <a asp-controller="Cart" asp-action="Create" asp-route-GameId="@ViewBag.gameId" class="btn btn-primary">Add to Cart</a>
+            </div>
+        </div>
+        <hr />
+        <div class="row m-2">
+            <div class="col-12 font-weight-bold">
+                <br />
+                Game Review
+                <br /><br />
+                <form method="post" asp-action="AddGameReview" asp-route-GameId="@ViewBag.gameId" onsubmit="return validate_game_review_input();">
+                    <div class="form-group">
+                        <textarea id="ReviewTextArea" name="ReviewTextAreaName" class="form-control" runat="server"></textarea>
+                    </div>
+                    <div class="form-group text-right">
+                        <input type="submit" value="Submit" class="btn btn-warning" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row m-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Review
+                        </th>
+                        <th>
+                            Review date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var eachObj in Model)
+                    {
+                        if (eachObj.isApproved == true)
+                        {
+                            <tr>
+                                <td width="70%">@eachObj.gameReviewDescription</td>
+                                <td width="30%">@eachObj.reviewDate2.ToString("MM/dd/yyyy")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+// Validate 'Game Review'
+function validate_game_review_input() {
+    if ($("#ReviewTextArea").val().trim() == "") {
+        alert("Please enter Game Review!");
+        $("#ReviewTextArea").focus();
+        return false;
+    }
+    return true;
+}
+</script>
+
+
+

@@ -1,0 +1,203 @@
+﻿@model JYTGameStore.Models.AddressCreate
+
+<div class="container p-3">
+
+    <ol class="breadcrumb">
+        JYTGameStore &gt; Member &gt;&nbsp;
+        <span class="font-weight-bold"> Address</span>
+    </ol>
+
+    <h1>@ViewBag.Title</h1>
+    <hr />
+
+    <div class="m-2">&nbsp;</div>
+
+    <form method="post" asp-action="SaveAddress" onsubmit="set_enable_controls();">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="MailingAddressId" hidden />
+        <input asp-for="MailingUserId" hidden />
+        <input asp-for="MailingAddressType" hidden />
+        <input asp-for="MailingCountryCode" hidden />
+
+        <h4>Mailing Address</h4>
+        <hr />
+        <div class="row m-2">
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="MailingStreetAddress" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="MailingStreetAddress" class="form-control" />
+                    <span asp-validation-for="MailingStreetAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="MailingStreetAddress2" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="MailingStreetAddress2" class="form-control" />
+                    <span asp-validation-for="MailingStreetAddress2" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="MailingCity" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="MailingCity" class="form-control" />
+                    <span asp-validation-for="MailingCity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="MailingProvinceCode" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <!--<input asp-for="MailingProvinceCode" class="form-control" />-->
+                    <select asp-for="MailingProvinceCode" class="form-control" asp-items="ViewBag.MailingProvinceCode"></select>
+                    <span asp-validation-for="MailingProvinceCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="MailingPostalCode" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="MailingPostalCode" class="form-control" />
+                    <span asp-validation-for="MailingPostalCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-2">&nbsp;</div>
+
+        <input asp-for="ShippingAddressId" hidden />
+        <input asp-for="ShippingUserId" hidden />
+        <input asp-for="ShippingAddressType" hidden />
+        <input asp-for="ShippingCountryCode" hidden />
+
+        <h4>Shipping Address</h4>
+        <hr />
+        <div class="row m-2">
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    &nbsp;
+                </div>
+                <div class="col-9 text-right">
+                    <input asp-for="MailingShippingSame" class="form-check-input" type="checkbox" checked="@ViewBag.MailingShippingSame" />
+                    <label asp-for="MailingShippingSame"></label>
+                    <span asp-validation-for="MailingShippingSame" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="ShippingStreetAddress" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="ShippingStreetAddress" class="form-control" disabled="@ViewBag.MailingShippingSame" />
+                    <span asp-validation-for="ShippingStreetAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="ShippingStreetAddress2" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="ShippingStreetAddress2" class="form-control" disabled="@ViewBag.MailingShippingSame" />
+                    <span asp-validation-for="ShippingStreetAddress2" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="ShippingCity" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="ShippingCity" class="form-control" disabled="@ViewBag.MailingShippingSame" />
+                    <span asp-validation-for="ShippingCity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="ShippingProvinceCode" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <!--<input asp-for="MailingProvinceCode" class="form-control" />-->
+                    <select asp-for="ShippingProvinceCode" class="form-control" asp-items="ViewBag.ShippingProvinceCode" disabled="@ViewBag.MailingShippingSame"></select>
+                    <span asp-validation-for="ShippingProvinceCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-3 text-right">
+                    <label asp-for="ShippingPostalCode" class="font-weight-bold"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="ShippingPostalCode" class="form-control" disabled="@ViewBag.MailingShippingSame" />
+                    <span asp-validation-for="ShippingPostalCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="m-2">&nbsp;</div>
+
+        <div class="row m-1">
+            <div class="col-3">
+                <a asp-action="Index" class="btn btn-info w-30">Back to Address View</a>
+            </div>
+            <div class="col-6 text-center">
+                <input type="submit" class="btn btn-primary w-auto" value="Save Mailing Address" />
+            </div>
+            <div class="col-3">&nbsp;</div>
+        </div>
+        <div class="p-3"></div>
+
+    </form>
+</div>
+
+<script>
+
+$(document).ready(function () {
+    // Focus on page load
+    // $("#MailingStreetAddress").focus();
+
+    // MailingShippingSame Checkbox clisk
+    $("#MailingShippingSame").on("click", function () {
+        set_shipping_address();
+    });
+});
+
+function set_shipping_address() {
+    var checked_value = $("#MailingShippingSame").prop("checked");
+
+    if (checked_value) {
+        $("#ShippingStreetAddress").val($("#MailingStreetAddress").val());
+        $("#ShippingStreetAddress2").val($("#MailingStreetAddress2").val());
+        $("#ShippingCity").val($("#MailingCity").val());
+        $("#ShippingProvinceCode").val($("#MailingProvinceCode").val());
+        $("#ShippingPostalCode").val($("#MailingPostalCode").val());
+
+        $("#ShippingStreetAddress").attr("disabled", true);
+        $("#ShippingStreetAddress2").attr("disabled", true);
+        $("#ShippingCity").attr("disabled", true);
+        $("#ShippingProvinceCode").attr("disabled", true);
+        $("#ShippingPostalCode").attr("disabled", true);
+    }
+    else {
+        $("#ShippingStreetAddress").attr("disabled", false);
+        $("#ShippingStreetAddress2").attr("disabled", false);
+        $("#ShippingCity").attr("disabled", false);
+        $("#ShippingProvinceCode").attr("disabled", false);
+        $("#ShippingPostalCode").attr("disabled", false);
+    }
+}
+
+function set_enable_controls() {
+    $("#ShippingStreetAddress").attr("disabled", false);
+    $("#ShippingStreetAddress2").attr("disabled", false);
+    $("#ShippingCity").attr("disabled", false);
+    $("#ShippingProvinceCode").attr("disabled", false);
+    $("#ShippingPostalCode").attr("disabled", false);
+}
+
+</script>
